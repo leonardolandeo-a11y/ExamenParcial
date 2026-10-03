@@ -16,7 +16,7 @@ public class PagedResponseDTO<T> {
     private int size;
     private long totalElements;
 
-    public PagedResponseDto(Page<T> pageResult) {
+    public PagedResponseDTO(Page<T> pageResult) {
         this.content = pageResult.getContent();
         this.page = pageResult.getNumber();
         this.size = pageResult.getSize();

@@ -1,5 +1,6 @@
 package com.example.parcialexam.controller;
 
+import com.example.parcialexam.dto.TripGetResponseDTO;
 import com.example.parcialexam.dto.TripsRequestDTO;
 import com.example.parcialexam.dto.TripsResponseDTO;
 import com.example.parcialexam.model.Trip;
@@ -33,7 +34,8 @@ public class TripController {
             @RequestParam(required = false) ZonedDateTime from,
             @PageableDefault(page = 0, size = 10) Pageable pageable) {
 
-        Page<Trip> productsPage = tripsService.getAllProducts(origin,destination,from,pageable);
-        return ResponseEntity.ok(productsPage);
+        Page<TripGetResponseDTO> productsPage = tripsService.getAllTrips(origin,destination,from,pageable);
+        
+        return ResponseEntity.status(HttpStatus.OK).body(productsPage);
     }
 }

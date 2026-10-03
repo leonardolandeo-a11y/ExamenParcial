@@ -37,10 +37,10 @@ public class TripsService {
         }
         return modelMapper.map(tripsRequestDTO,TripsResponseDTO.class);
     }
-    public Page<TripGetResponseDTO> getAllProducts(String origin,
+    public Page<TripGetResponseDTO> getAllTrips(String origin,
                                                    String destination,
                                                    ZonedDateTime from, Pageable pageable) {
-        Page<Trip> productsPage = tripRepository.findAll(pageable);
+        Page<TripGetResponseDTO> productsPage = tripRepository.findAll(pageable);
 
         // Transforma la Page de entidades a una Page de DTOs
         return productsPage.map(product -> modelMapper.map(product, TripGetResponseDTO.class));
