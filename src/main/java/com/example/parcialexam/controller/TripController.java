@@ -9,12 +9,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+
+import java.time.ZonedDateTime;
+
 @RestController
 @AllArgsConstructor
 public class TripController {
@@ -22,15 +22,18 @@ public class TripController {
 
 
     @PostMapping("/trips")
-    public ResponseEntity<TripsResponseDTO> createTrip(@Valid @ResponseBody TripsRequestDTO tripsRequestDTO){
+    public ResponseEntity<TripsResponseDTO> createTrip(@Valid @RequestBody TripsRequestDTO tripsRequestDTO){
         TripsResponseDTO tripsResponseDTO = tripsService.createTrip(tripsRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(tripsResponseDTO);
     }
     @GetMapping
     public ResponseEntity<Page<Trip>> getAllProducts(
-            @PageableDefault(page = 0, size = 5) Pageable pageable) {
+            @RequestParam(required = false) String origin,
+            @RequestParam(required = false) String destination,
+            @RequestParam(required = false) ZonedDateTime from,
+            @PageableDefault(page = 0, size = 10) Pageable pageable) {
 
-        Page<Trip> productsPage = tripsService.getAllProducts(pageable);
+        Page<Trip> productsPage = tripsService.getAllProducts(origin,destination,from,pageable);
         return ResponseEntity.ok(productsPage);
     }
 }

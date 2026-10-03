@@ -1,5 +1,6 @@
 package com.example.parcialexam.service;
 
+import com.example.parcialexam.dto.TripGetResponseDTO;
 import com.example.parcialexam.dto.TripsRequestDTO;
 import com.example.parcialexam.dto.TripsResponseDTO;
 import com.example.parcialexam.exceptions.TripFullException;
@@ -14,7 +15,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 @Service
@@ -34,8 +37,13 @@ public class TripsService {
         }
         return modelMapper.map(tripsRequestDTO,TripsResponseDTO.class);
     }
-    public Page<Trip> getAllProducts(Pageable pageable) {
-        return tripRepository.findAll(pageable);
+    public Page<TripGetResponseDTO> getAllProducts(String origin,
+                                                   String destination,
+                                                   ZonedDateTime from, Pageable pageable) {
+        Page<Trip> productsPage = tripRepository.findAll(pageable);
+
+        // Transforma la Page de entidades a una Page de DTOs
+        return productsPage.map(product -> modelMapper.map(product, TripGetResponseDTO.class));
     }
 
 }
